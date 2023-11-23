@@ -10,22 +10,59 @@
         $this->db = $db;
     }
 
-    public function getAll() {
-        $stmt = $this->db->prepare("SELECT * FROM {$this->table}");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function getAll(){
+        $stm = $this->db->prepare("SELECT * FROM {$this->table}");
+        $stm->execute();
+        return $stm->fetchAll();
     }
-    public function insert($data) {
+    public function insert($data){
+        $sql = "INSERT INTO {$this->table} (";
+        foreach ($data as $key => $value) {
+            $sql .= "{$key},";
+        }
+        $sql = trim($sql, ',');
+        $sql .= ") VALUES (";
+
+        foreach ($data as $key => $value) {
+            $sql .= ":{$key},";
+        }
+        $sql = trim($sql, ',');
+        $sql .= ")";
+
+        $stm = $this->db->prepare($sql);
+        foreach ($data as $key => $value) {
+            $stm->bindValue(":{$key}", $value);
+        }
         
+        $stm->execute();
     }
-    public function getById($id) {
-        
+
+    public function getById($id){
+        $stm = $this->db->prepare("SELECT * FROM {$this->table} WHERE id = :id");
+        $stm->bindValue(":id", $id);
+        $stm->execute();
+        return $stm->fetch();
     }
-    public function updateById($id , $data) {
+    public function updateById($id, $data){
+        $sql = "UPDATE {$this->table} SET ";
+        foreach ($data as $key => $value) {
+            $sql .= "{$key} = :{$key},";
+        }
+        $sql = trim($sql, ',');
+        $sql .= " WHERE id = :id ";
+
+        $stm = $this->db->prepare($sql);
+        foreach ($data as $key => $value) {
+            $stm->bindValue(":{$key}", $value);
+        }
         
+        $stm->bindValue(":id", $id);
+        $stm->execute();
     }
-    public function deleteByAll($id) {
-        
+    public function deleteById($id){
+        $stm = $this->db->prepare("DELETE FROM {$this->table} WHERE id = :id");
+        $stm->bindValue(':id', $id);
+        $stm->execute();
     }
 
     public function paginate($page, $limit){

@@ -20,6 +20,19 @@ class UserController extends Controller{
     }
 
     public function create(){
+        $res = new Result();
+        $postData = file_get_contents('php://input');
+        $body = json_decode($postData, true);
+
+        $this->userModel->insert([
+            'username' => $body['username'],
+            'password'=> $body['password'],
+            'type'=> $body['type']
+        ]);
+        $res->success = true;
+        $res->message = 'Registro exitoso';
+
+        echo json_encode($res);
     }
 
     public function read(){

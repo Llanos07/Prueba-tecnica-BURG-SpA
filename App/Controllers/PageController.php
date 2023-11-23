@@ -7,7 +7,7 @@
             $this->render('home', [], 'site');
         }
         public function create(){
-            echo "create";
+            $this->render('create', [], 'site');
         }
         public function read(){
             echo "read";
