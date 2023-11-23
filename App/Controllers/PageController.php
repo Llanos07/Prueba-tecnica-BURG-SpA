@@ -1,7 +1,7 @@
 <?php 
     class PageController{
         public function home(){
-            echo "home";
+            require_once(__DIR__ . '/../Views/home.view.php');
         }
         public function create(){
             echo "create";
