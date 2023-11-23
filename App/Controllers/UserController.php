@@ -24,14 +24,22 @@ class UserController extends Controller{
         $postData = file_get_contents('php://input');
         $body = json_decode($postData, true);
 
+        if ($body === null || !isset($body['username']) || !isset($body['password']) || !isset($body['type'])) {
+            print_r($body);
+            $res->success = false;
+            $res->message = 'Datos invalidos';
+            echo json_encode($res);
+            return;
+        }
+
         $this->userModel->insert([
             'username' => $body['username'],
             'password'=> $body['password'],
             'type'=> $body['type']
         ]);
+
         $res->success = true;
         $res->message = 'Registro exitoso';
-
         echo json_encode($res);
     }
 

@@ -19,7 +19,7 @@
             </div>
         </div>
         <div class="row mb-3 col-6 mx-auto">
-            <button type="submit" id="createUser" class="btn btn-info fs-2">Registrar</button>
+            <button onclick={userCreate} id="createUser" class="btn btn-info fs-2">Registrar</button>
         </div>
         </form>
     </div>
