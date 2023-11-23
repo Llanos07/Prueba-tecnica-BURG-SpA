@@ -1,7 +1,10 @@
 <?php 
-    class PageController{
+    class PageController extends Controller{
+        public function __construct(PDO $conn){
+
+        }
         public function home(){
-            require_once(__DIR__ . '/../Views/home.view.php');
+            $this->render('home', [], 'site');
         }
         public function create(){
             echo "create";
@@ -14,5 +17,8 @@
         }
         public function delete(){
             echo "delete";
+        }
+        public function list(){
+            $this->render('list', [], 'site');
         }
     }

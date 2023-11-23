@@ -7,7 +7,6 @@ class Router
     private $method;
 
    public function __construct(){
-
     $this->matchRoute();
    }
 
@@ -24,8 +23,9 @@ class Router
    }
 
    public function run(){
-    
-    $controller = new $this->controller;
+    $db = new Database();
+    $conn = $db->getConn();
+    $controller = new $this->controller($conn);
     $method = $this->method;
     $controller->$method();
    }
