@@ -1,1 +1,1 @@
-<div class="wallpaper d-flex justify-content-center align-items-center"></div>
+<h1>Prueba de pantalla principal</h1>

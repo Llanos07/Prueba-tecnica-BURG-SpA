@@ -1,13 +1,12 @@
 <?php
-// Validacion para mostrar pagina solo cuando se este logueado
 session_start();
-
-if (!isset($_SESSION['user'])) {
-    
-    header('Location: http://localhost/BURG_SpA_API/Public/page/login');
-    exit;
+$username = $_SESSION["user"]->username;
+$token = $_SESSION["token"];
+if (!isset($username) || !isset($token)) {
+    header('Location: /BURG_SpA_API/Public/page/login');
+    session_destroy();
+    die();
 }
-
 ?>
 
 <!DOCTYPE html>

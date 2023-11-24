@@ -81,16 +81,17 @@ class UserController extends Controller{
         $res->success = true;
         $res->message = 'Inicio de sesión exitoso';
         $res->token = $token;
+        $res->loggedin = true;
         echo json_encode($res);
-        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
         $_SESSION['user'] = $user;
-        $_SESSION['loggedin'] = true;
     }
 
     public function logout(){
         $res = new Result();
         $postData = file_get_contents('php://input');
+        print_r($postData);
         $data = json_decode($postData, true);
+        var_dump($data);
     
         if ($data === null || !isset($data['token'])) {
             $res->success = false;
