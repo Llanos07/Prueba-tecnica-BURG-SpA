@@ -9,17 +9,8 @@
         public function create(){
             $this->render('create', [], 'plain');
         }
-        public function read(){
-            echo "read";
-        }
-        public function update(){
-            echo "update";
-        }
-        public function delete(){
-            echo "delete";
-        }
-        public function list(){
-            $this->render('list', [], 'site');
+        public function profile(){
+            $this->render('profile', [], 'site');
         }
         public function login(){
             $this->render('login', [], 'plain');

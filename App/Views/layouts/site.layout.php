@@ -2,9 +2,14 @@
 // Validacion para mostrar pagina solo cuando se este logueado
 session_start();
 
-if (!isset($_SESSION['user'])) {
-    
-    header('Location: http://localhost/BURG_SpA_API/Public/page/login');
+if (!isset($_SERVER['HTTP_AUTHORIZATION']) || $_SERVER['HTTP_AUTHORIZATION'] != 'Bearer ' . $_SESSION['token']) {
+    print_r($_SESSION['token']);
+    header('Location: /BURG_SpA_API/Public/page/login');
+    exit;
+}
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: /BURG_SpA_API/Public/page/login');
     exit;
 }
 
@@ -30,7 +35,7 @@ if (!isset($_SESSION['user'])) {
             <ul class="navbar-nav">
                 <li class="nav-item" id="homeNav"><a class="nav-link"  href="../page/home">Pantalla Principal</a></li>
                 <li class="nav-item" id="profileNav"><a class="nav-link"  href="../page/profile">Mi perfil</a></li>
-                <li class="nav-item" id="logout"><a class="nav-link"  href="">Cerrar sesion</a></li>
+                <li class="nav-item" id="logout"><a class="nav-link"  href="?logout">Cerrar sesion</a></li>
             </ul>
             </div>
         </div>

@@ -22,7 +22,7 @@
             return $result ? $result['user_id'] : null;
         }
 
-        public function invalidateToken($token){
+        public function deleteToken($token){
             $stmt = $this->db->prepare("DELETE FROM tokens WHERE token = :token");
             $stmt->execute(['token' => $token]);
         }

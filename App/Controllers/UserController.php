@@ -1,5 +1,6 @@
 <?php 
 require_once(__DIR__ .'/../Models/User.php');
+session_start();
 class UserController extends Controller{
     private $userModel;
     public function __construct(PDO $conn){
@@ -53,15 +54,6 @@ class UserController extends Controller{
         echo json_encode($res);
     }
 
-    public function read(){
-    }
-
-    public function update(){
-    }
-
-    public function delete(){
-    }
-
     public function login(){
         $res = new Result();
         $postData = file_get_contents('php://input');
@@ -83,14 +75,16 @@ class UserController extends Controller{
         }
     
         // token de acceso para usuarios logueados
-        $token = bin2hex(random_bytes(16)); // Genera un token aleatorio
+        $token = bin2hex(random_bytes(16));
         $this->userModel->storeToken($user->id, $token);
+        $_SESSION['token'] = $token;
         $res->success = true;
         $res->message = 'Inicio de sesión exitoso';
         $res->token = $token;
         echo json_encode($res);
-        session_start();
+        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
         $_SESSION['user'] = $user;
+        $_SESSION['loggedin'] = true;
     }
 
     public function logout(){
@@ -114,10 +108,11 @@ class UserController extends Controller{
             return;
         }
     
-        // Invalida el token de acceso
-        $this->userModel->invalidateToken($token);
+        // Elimina el token de acceso
+        $this->userModel->deleteToken($token);
         $res->success = true;
         $res->message = 'Cierre de sesión exitoso';
+        $_SESSION['loggedin'] = false;
         echo json_encode($res);
     }
 
