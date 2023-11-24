@@ -1,3 +1,15 @@
+<?php
+// Validacion para mostrar pagina solo cuando se este logueado
+session_start();
+
+if (!isset($_SESSION['user'])) {
+    
+    header('Location: http://localhost/BURG_SpA_API/Public/page/login');
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,23 +22,22 @@
 <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="<?= URL_PATH ?>/page/home">BURG SpA</a>
+            <a class="navbar-brand">BURG SpA</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
-                </li>
+                <li class="nav-item" id="homeNav"><a class="nav-link"  href="../page/home">Pantalla Principal</a></li>
+                <li class="nav-item" id="profileNav"><a class="nav-link"  href="../page/profile">Mi perfil</a></li>
+                <li class="nav-item" id="logout"><a class="nav-link"  href="">Cerrar sesion</a></li>
             </ul>
             </div>
         </div>
     </nav>
     <?php echo $content ?>
+    
+    <script src="<?= URL_PATH ?>/Assets/js/userLogout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>

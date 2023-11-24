@@ -32,6 +32,14 @@ class UserController extends Controller{
             return;
         }
 
+        $existUser = $this->userModel->find($body['username']);
+        if ($existUser) {
+            $res->success = false;
+            $res->message = 'El usuario ya existe';
+            echo json_encode($res);
+            return;
+        }
+
         $encryptPass = password_hash($body['password'], PASSWORD_DEFAULT);
 
         $this->userModel->insert([
@@ -81,6 +89,8 @@ class UserController extends Controller{
         $res->message = 'Inicio de sesión exitoso';
         $res->token = $token;
         echo json_encode($res);
+        session_start();
+        $_SESSION['user'] = $user;
     }
 
     public function logout(){
@@ -108,6 +118,22 @@ class UserController extends Controller{
         $this->userModel->invalidateToken($token);
         $res->success = true;
         $res->message = 'Cierre de sesión exitoso';
+        echo json_encode($res);
+    }
+
+    public function checkLoginStatus() {
+        $res = new Result();
+    
+        if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+            $res->success = true;
+            $res->loggedin = true;
+            $res->message = 'El usuario está logueado';
+        } else {
+            $res->success = true;
+            $res->loggedin = false;
+            $res->message = 'El usuario no está logueado';
+        }
+    
         echo json_encode($res);
     }
 
